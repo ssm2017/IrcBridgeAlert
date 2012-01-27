@@ -25,6 +25,7 @@ namespace ModIrcBridgeAlertModule
 		private IDialogModule m_dialogModule;
 
         public string m_name = "IrcBridgeAlertModule";
+		public string alert_message = "Warning IrcBridge active";
         private bool m_enabled = false;
         private Dictionary<string, Scene> m_scenel = new Dictionary<string, Scene> ();
 
@@ -49,6 +50,11 @@ namespace ModIrcBridgeAlertModule
 			if (cnf != null) {
 				if (cnf.GetBoolean("enabled", false)) {
 					m_enabled = true;
+					alert_message = cnf.GetString("alert_msg_pre", "This region is linked to irc.")+ "\n"
+						+ " \nServer "+ cnf.GetString("server", "")
+						+ " \nPort "+ cnf.GetString("port", "")
+						+ " \nChanel "+ cnf.GetString("channel", "")+ "\n"
+						+ "\n"+ cnf.GetString("alert_msg_post", "\nEverything you say in public chat can be listened.\nSee http://opensimulator.org/wiki/IRCBridgeModule for more informations.");
 				}
 			}
         }
@@ -102,7 +108,7 @@ namespace ModIrcBridgeAlertModule
 
 		void HandleSceneEventManagerOnMakeRootAgent (ScenePresence presence) {
 			IClientAPI client = presence.ControllingClient;
-			m_dialogModule.SendAlertToUser(client, "Attention. Irc Bridge actif.", true);
+			m_dialogModule.SendAlertToUser(client, alert_message, true);
 		}
 
         #endregion
