@@ -102,7 +102,7 @@ namespace ModIrcBridgeAlertModule
 
 		void HandleSceneEventManagerOnMakeRootAgent (ScenePresence presence) {
 			IClientAPI client = presence.ControllingClient;
-			m_dialogModule.SendAlertToUser(client, "Attention. Irc Bridge actif.");
+			m_dialogModule.SendAlertToUser(client, "Attention. Irc Bridge actif.", true);
 		}
 
         #endregion
