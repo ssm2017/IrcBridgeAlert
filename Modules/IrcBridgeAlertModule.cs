@@ -12,7 +12,7 @@ using OpenSim.Region.Framework.Interfaces;
 using OpenSim.Region.Framework.Scenes;
 using Mono.Addins;
 
-[assembly: Addin("IrcBridgeAlertModule", "0.1")]
+[assembly: Addin("IrcBridgeAlertModule", "7.5")]
 [assembly: AddinDependency("OpenSim", "0.5")]
 
 namespace ModIrcBridgeAlertModule
@@ -70,13 +70,13 @@ namespace ModIrcBridgeAlertModule
         {
 			if (m_enabled) {
 				m_log.InfoFormat ("[IrcBridgeAlertModule]: Region {0} is using irc", scene.RegionInfo.RegionName);
-				m_dialogModule = scene.RequestModuleInterface<IDialogModule>();
-				scene.EventManager.OnMakeRootAgent += HandleSceneEventManagerOnMakeRootAgent;
+				scene.EventManager.OnMakeRootAgent += OnMakeRootAgent;
 			}
         }
 
         public void RemoveRegion (Scene scene)
         {
+			scene.EventManager.OnMakeRootAgent -= OnMakeRootAgent;
             if (m_scenel.ContainsKey (scene.RegionInfo.RegionName)) {
                 lock (m_scenel) {
                     m_scenel.Remove (scene.RegionInfo.RegionName);
@@ -89,7 +89,7 @@ namespace ModIrcBridgeAlertModule
         {
             if (m_enabled == false)
                 return;
-
+			m_dialogModule = scene.RequestModuleInterface<IDialogModule>();
         }
 
 
@@ -106,7 +106,7 @@ namespace ModIrcBridgeAlertModule
 
         #region IrcBridgeAlertModule
 
-		void HandleSceneEventManagerOnMakeRootAgent (ScenePresence presence) {
+		void OnMakeRootAgent (ScenePresence presence) {
 			IClientAPI client = presence.ControllingClient;
 			m_dialogModule.SendAlertToUser(client, alert_message, true);
 		}
