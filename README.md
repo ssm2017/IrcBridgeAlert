@@ -14,3 +14,4 @@ Parameters names and default values are :
 
  * alert_msg_pre = "This region is linked to irc."
  * alert_msg_post = "Everything you say in public chat can be listened. See http://opensimulator.org/wiki/IRCBridgeModule for more informations."
+ * alert_show_server_infos = true;

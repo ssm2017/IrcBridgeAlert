@@ -49,11 +49,16 @@ namespace ModIrcBridgeAlertModule
 				if (cnf.GetBoolean("enabled", false))
 				{
 					m_enabled = true;
-					alert_message = cnf.GetString("alert_msg_pre", "This region is linked to irc.")+ "\n"
-						+ " \nServer "+ cnf.GetString("server", "")
+					string server_infos = "";
+					if (cnf.GetBoolean("alert_show_server_infos", true))
+					{
+						server_infos = "\nServer "+ cnf.GetString("server", "")
 						+ " \nPort "+ cnf.GetString("port", "")
-						+ " \nChanel "+ cnf.GetString("channel", "")+ "\n"
-						+ "\n"+ cnf.GetString("alert_msg_post", "\nEverything you say in public chat can be listened.\nSee http://opensimulator.org/wiki/IRCBridgeModule for more informations.");
+						+ " \nChanel "+ cnf.GetString("channel", "")+ "\n\n";
+					}
+					alert_message = cnf.GetString("alert_msg_pre", "This region is linked to irc.")+ "\n"
+						+ server_infos
+						+ cnf.GetString("alert_msg_post", "Everything you say in public chat can be listened.\nSee http://opensimulator.org/wiki/IRCBridgeModule for more informations.");
 				}
 			}
 		}
